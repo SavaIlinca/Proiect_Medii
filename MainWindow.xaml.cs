@@ -16,6 +16,7 @@ using System.Data.Entity;
 using VestigeSalon;
 using System.Data;
 
+
 namespace Proiect_Medii
 {
     /// <summary>
@@ -31,10 +32,10 @@ namespace Proiect_Medii
     public partial class MainWindow : Window
     {
         ActionState action = ActionState.Nothing;
-        VesigeEntitiesSalon ctx = new VestigeEntitiesSalon();
+        VestigeEntitiesSalon ctx = new VestigeEntitiesSalon();
         CollectionViewSource clientVSource;
         CollectionViewSource hairstylistVSource;
-        CollectionViewSource clientProgramariVSource;
+        CollectionViewSource clientProgramaresVSource;
         public MainWindow()
         {
             InitializeComponent();
@@ -44,46 +45,45 @@ namespace Proiect_Medii
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             clientVSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("clientViewSource")));
-            clientVSource.Source = ctx.Clienti.Local;
-            ctx.Clienti.Load();
-            clientProgramariVSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("clientProgramariViewSource")));
-            //customerOrdersVSource.Source = ctx.Orders.Local;
+            clientVSource.Source = ctx.Clients.Local;
+            ctx.Clients.Load();
+            clientProgramaresVSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("clientProgramaresViewSource")));
+            //clientProgramaresVSource.Source = ctx.Programares.Local;
             BindDataGrid();
             hairstylistVSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("hairstylistViewSource")));
-            hairstylistVSource.Source = ctx.Hairstylisti.Local;
-            ctx.Hairstylisti.Load();
-            ctx.Programari.Load();
-            ctx.Hairstilisti.Load();
-            cmbClienti.ItemsSource = ctx.Clienti.Local;
-            //cmbCustomers.DisplayMemberPath = "FirstName";
-            cmbClienti.SelectedValuePath = "IdClient";
-            cmbHairstylist.ItemsSource = ctx.Hairstylisti.Local;
-            //cmbInventory.DisplayMemberPath = "Make";
+            hairstylistVSource.Source = ctx.Hairstylists.Local;
+            ctx.Hairstylists.Load();
+            ctx.Programares.Load();
+            ctx.Hairstylists.Load();
+            cmbClients.ItemsSource = ctx.Clients.Local;
+            //cmbClients.DisplayMemberPath = "Nume";
+            cmbClients.SelectedValuePath = "IdClient";
+            cmbHairstylist.ItemsSource = ctx.Hairstylists.Local;
+            //cmbHairstylist.DisplayMemberPath = "Experienta";
             cmbHairstylist.SelectedValuePath = "IdHairstylist";
 
             System.Windows.Data.CollectionViewSource clientViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("clientViewSource")));
             // Load data by setting the CollectionViewSource.Source property:
-            // customerViewSource.Source = [generic data source]
+            // clientViewSource.Source = [generic data source]
             System.Windows.Data.CollectionViewSource hairstylistViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("hairstylistViewSource")));
             // Load data by setting the CollectionViewSource.Source property:
-            // inventoryViewSource.Source = [generic data source]
+            // hairstylistViewSource.Source = [generic data source]
         }
-        private void SaveClienti()
+        private void SaveClients()
         {
             Client client = null;
             if (action == ActionState.New)
             {
                 try
                 {
-                    //instantiem Customer entity
+                    //instantiem Client entity
                     client = new Client()
                     {
-                        Nume = numeTextBox.Text.Trim(),
-                        Prenume = prenumeTextBox.Text.Trim()
-                        Telefon = telefonTextBox.Text.Trim()
+                        Nume = NumeTextBox.Text.Trim(),
+                        Prenume = PrenumeTextBox.Text.Trim()
                     };
                     //adaugam entitatea nou creata in context
-                    ctx.Clienti.Add(client);
+                    ctx.Clients.Add(client);
                     clientVSource.View.Refresh();
                     //salvam modificarile
                     ctx.SaveChanges();
@@ -101,7 +101,6 @@ namespace Proiect_Medii
                     client = (Client)clientDataGrid.SelectedItem;
                     client.Nume = NumeTextBox.Text.Trim();
                     client.Prenume = PrenumeTextBox.Text.Trim();
-                    client.Telefon = TelefonTextBox.Text.Trim();
                     //salvam modificarile
                     ctx.SaveChanges();
                 }
@@ -115,7 +114,7 @@ namespace Proiect_Medii
                 try
                 {
                     client = (Client)clientDataGrid.SelectedItem;
-                    ctx.CLienti.Remove(client);
+                    ctx.Clients.Remove(client);
                     ctx.SaveChanges();
                 }
                 catch (DataException ex)
@@ -126,23 +125,22 @@ namespace Proiect_Medii
             }
 
         }
-        private void SaveHairstylisti()
+        private void SaveHairstylists()
         {
             Hairstylist hairstylist = null;
             if (action == ActionState.New)
             {
                 try
                 {
-                    //instantiem inventory entity
+                    //instantiem hairstylist entity
                     hairstylist = new Hairstylist()
                     {
-                        NumeH = numeHTextBox.Text.Trim(),
-                        PrenumeH = prenumeHTextBox.Text.Trim()
-                        Experienta = experientaTextBox.Text.Trim()
+                        NumeH = NumeHTextBox.Text.Trim(),
+                        Experienta = ExperientaTextBox.Text.Trim()
                     };
                     //adaugam entitatea nou creata in context
-                    ctx.Hairstylisti.Add(hairstylist);
-                    haistylistVSource.View.Refresh();
+                    ctx.Hairstylists.Add(hairstylist);
+                    hairstylistVSource.View.Refresh();
                     //salvam modificarile
                     ctx.SaveChanges();
                 }
@@ -158,8 +156,8 @@ namespace Proiect_Medii
                 try
                 {
                     hairstylist = (Hairstylist)hairstylistDataGrid.SelectedItem;
-                    hairstylist.NumeH = numeHTextBox.Text.Trim();
-                    hairstylist.PrenumeH = prenumeHTextBox.Text.Trim();
+                    hairstylist.NumeH = NumeHTextBox.Text.Trim();
+                    hairstylist.Experienta = ExperientaTextBox.Text.Trim();
                     //salvam modificarile
                     ctx.SaveChanges();
                 }
@@ -173,7 +171,7 @@ namespace Proiect_Medii
                 try
                 {
                     hairstylist = (Hairstylist)hairstylistDataGrid.SelectedItem;
-                    ctx.Hairstylisti.Remove(hairstylist);
+                    ctx.Hairstylists.Remove(hairstylist);
                     ctx.SaveChanges();
                 }
                 catch (DataException ex)
@@ -184,28 +182,27 @@ namespace Proiect_Medii
             }
 
         }
-        private void SaveProgramari()
+        private void SaveProgramares()
         {
             Programare programare = null;
             if (action == ActionState.New)
             {
                 try
                 {
-
+                    Client client = (Client)cmbClients.SelectedItem;
+                    Hairstylist hairstylist = (Hairstylist)cmbHairstylist.SelectedItem;
+                    //instantiem Programare entity
                     programare = new Programare()
                     {
-                        Data = dataTextBox.Text.Trim(),
-                        IdClient = idClientTextBox.Text.Trim()
-
-                        IdHairstylist = idHairstylistTextBox.Trim()
+                        IdClient = client.IdClient,
+                        IdHairstylist = hairstylist.IdHairstylist
                     };
                     //adaugam entitatea nou creata in context
-                    ctx.Programari.Add(programare);
-                    programareVSource.View.Refresh();
+                    ctx.Programares.Add(programare);
                     //salvam modificarile
                     ctx.SaveChanges();
+                    BindDataGrid();
                 }
-                //using System.Data;
                 catch (DataException ex)
                 {
                     MessageBox.Show(ex.Message);
@@ -213,68 +210,84 @@ namespace Proiect_Medii
             }
             else if (action == ActionState.Edit)
             {
+                dynamic selectedProgramare = programaresDataGrid.SelectedItem;
                 try
                 {
-                    Programare = (Programare)programareDataGrid.SelectedItem;
-                    programare.Data = dataTextBox.Text.Trim();
-
-
-                    ctx.SaveChanges();
+                    int curr_id = selectedProgramare.IdProgramare;
+                    var editedProgramare = ctx.Programares.FirstOrDefault(s => s.IdProgramare == curr_id);
+                    if (editedProgramare != null)
+                    {
+                        editedProgramare.IdClient = Int32.Parse(cmbClients.SelectedValue.ToString());
+                        editedProgramare.IdHairstylist = Convert.ToInt32(cmbHairstylist.SelectedValue.ToString());
+                        //salvam modificarile
+                        ctx.SaveChanges();
+                    }
                 }
                 catch (DataException ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
+                BindDataGrid();
+                // pozitionarea pe item-ul curent
+                clientVSource.View.MoveCurrentTo(selectedProgramare);
             }
             else if (action == ActionState.Delete)
             {
                 try
                 {
-                    Programare = (Programare)programareDataGrid.SelectedItem;
-                    ctx.Programari.Remove(programare);
-                    ctx.SaveChanges();
+                    dynamic selectedProgramare = programaresDataGrid.SelectedItem;
+                    int curr_id = selectedProgramare.IdProgramare;
+                    var deletedProgramare = ctx.Programares.FirstPrDefault(s => s.IdProgramare == curr_id);
+                    if (deletedProgramare != null)
+                    {
+                        ctx.Programares.Remove(deletedProgramare);
+                        ctx.SaveChanges();
+                        MessageBox.Show("Programare Deleted Successfully", "Message");
+                        BindDataGrid();
+                    }
                 }
                 catch (DataException ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
-                programareVSource.View.Refresh();
             }
-
-
         }
         private void BindDataGrid()
         {
-            var queryProgramare = from pro in ctx.Programari
-                             join cli in ctx.Clienti on pro.IdClient equals
-                             cli.IdClient
-                             join inv in ctx.Hairstylisti on pro.IdHairstylist
-                 equals hair.IdHairstylist
-                             select new
-                             {
-                                 pro.IdProgramare,
-                                 pro.IdHairstylist,
-                                 pro.IdClient,
-                                 cli.Nume,
-                                 cli.Prenume,
-                                 cli.Telefon,
-                                 hair.NumeH,
-                                 hair.PrenumeH,
-                                 hair.Experienta,
-                                 
-                             };
-            clientProgramariVSource.Source = queryProgramare.ToList();
+            var queryProgramare = from ord in ctx.Programares
+                                  join cust in ctx.Clients on ord.IdClient equals
+                                  cust.IdClient
+                                  join inv in ctx.Hairstylists on ord.IdHairstylist
+                    equals inv.IdHairstylist
+                                  select new
+                                  {
+                                      ord.IdProgramare,
+                                      ord.IdHairstylist,
+                                      ord.IdClient,
+                                      cust.Nume,
+                                      cust.Prenume,
+                                      inv.Experienta,
+                                      inv.NumeH
+                                  };
+            clientProgramaresVSource.Source = queryProgramare.ToList();
         }
 
         private void btnNew_Click(object sender, RoutedEventArgs e)
         {
             action = ActionState.New;
+            ReInitialize();
+            BindingOperations.ClearBinding(NumeTextBox, TextBox.TextProperty);
+            BindingOperations.ClearBinding(PrenumeTextBox, TextBox.TextProperty);
+            SetValidationBinding();
 
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             action = ActionState.Edit;
+            BindingOperations.ClearBinding(NumeTextBox, TextBox.TextProperty);
+            BindingOperations.ClearBinding(PrenumeTextBox, TextBox.TextProperty);
+            SetValidationBinding();
 
         }
 
@@ -286,22 +299,22 @@ namespace Proiect_Medii
 
         private void btnPrevious_Click(object sender, RoutedEventArgs e)
         {
-            customerVSource.View.MoveCurrentToPrevious();
+            clientVSource.View.MoveCurrentToPrevious();
         }
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
-            customerVSource.View.MoveCurrentToNext();
+            clientVSource.View.MoveCurrentToNext();
         }
 
         private void btnPrevious1_Click(object sender, RoutedEventArgs e)
         {
-            inventoryVSource.View.MoveCurrentToPrevious();
+            hairstylistVSource.View.MoveCurrentToPrevious();
         }
 
         private void btnNext1_Click(object sender, RoutedEventArgs e)
         {
-            inventoryVSource.View.MoveCurrentToNext();
+            hairstylistVSource.View.MoveCurrentToNext();
         }
         private void gbOperations_Click(object sender, RoutedEventArgs e)
         {
@@ -328,20 +341,20 @@ namespace Proiect_Medii
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            TabItem ti = tabCtrlAutoLot.SelectedItem as TabItem;
+            TabItem ti = tabCtrlSalon.SelectedItem as TabItem;
 
             switch (ti.Header)
             {
-                case "Customers":
-                    SaveCustomers();
+                case "Clients":
+                    SaveClients();
                     break;
-                case "Inventory":
-                    SaveInventories();
+                case "Hairstylist":
+                    SaveHairstylists();
                     break;
-                case "Orders":
+                case "Programares":
                     break;
             }
-            ReInitialize();
+
 
         }
 
@@ -349,8 +362,30 @@ namespace Proiect_Medii
         {
             ReInitialize();
         }
-    }
+        private void SetValidationBinding()
+        {
+            Binding numeValidationBinding = new Binding();
+            numeValidationBinding.Source = clientVSource;
+            numeValidationBinding.Path = new PropertyPath("Nume");
+            numeValidationBinding.NotifyOnValidationError = true;
+            numeValidationBinding.Mode = BindingMode.TwoWay;
+            numeValidationBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            //string required
+            numeValidationBinding.ValidationRules.Add(new StringNotEmpty());
+            NumeTextBox.SetBinding(TextBox.TextProperty, numeValidationBinding);
+            Binding lastNameValidationBinding = new Binding();
+            prenumeValidationBinding.Source = clientVSource;
+            prenumeValidationBinding.Path = new PropertyPath("Prenume");
+            prenumeValidationBinding.NotifyOnValidationError = true;
+            prenumeValidationBinding.Mode = BindingMode.TwoWay;
+            prenumeValidationBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            //string min length validator
+            prenumeValidationBinding.ValidationRules.Add(new StringMinLengthValidator());
+            PrenumeTextBox.SetBinding(TextBox.TextProperty, lastNameValidationBinding); //setare binding nou
+        }
 
+
+    }
 
 
 }
