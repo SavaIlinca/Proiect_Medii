@@ -235,8 +235,8 @@ namespace Proiect_Medii
             {
                 try
                 {
-                    Programare = (Programare)programareDataGrid.SelectedItem;
-                    ctx.Programari.Remove(programare);
+                    programare = (Programare)programaresDataGrid.SelectedItem;
+                    ctx.Programares.Remove(programare);
                     ctx.SaveChanges();
                 }
                 catch (DataException ex)
@@ -271,7 +271,7 @@ namespace Proiect_Medii
             ReInitialize();
             BindingOperations.ClearBinding(NumeTextBox, TextBox.TextProperty);
             BindingOperations.ClearBinding(PrenumeTextBox, TextBox.TextProperty);
-            SetValidationBinding();
+            
 
         }
 
@@ -280,7 +280,7 @@ namespace Proiect_Medii
             action = ActionState.Edit;
             BindingOperations.ClearBinding(NumeTextBox, TextBox.TextProperty);
             BindingOperations.ClearBinding(PrenumeTextBox, TextBox.TextProperty);
-            SetValidationBinding();
+            
 
         }
 
@@ -361,4 +361,3 @@ namespace Proiect_Medii
     }
 
 
-}
