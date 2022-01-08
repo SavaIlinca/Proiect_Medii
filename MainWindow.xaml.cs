@@ -235,16 +235,9 @@ namespace Proiect_Medii
             {
                 try
                 {
-                    dynamic selectedProgramare = programaresDataGrid.SelectedItem;
-                    int curr_id = selectedProgramare.IdProgramare;
-                    var deletedProgramare = ctx.Programares.FirstOrDefault(s => s.IdProgramare == curr_id);
-                    if (deletedProgramare != null)
-                    {
-                        ctx.Programares.Remove(deletedProgramare);
-                        ctx.SaveChanges();
-                        MessageBox.Show("Programare Deleted Successfully", "Message");
-                        BindDataGrid();
-                    }
+                    Programare = (Programare)programareDataGrid.SelectedItem;
+                    ctx.Programari.Remove(programare);
+                    ctx.SaveChanges();
                 }
                 catch (DataException ex)
                 {
@@ -362,20 +355,7 @@ namespace Proiect_Medii
         {
             ReInitialize();
         }
-        private void SetValidationBinding()
-        {
-            Binding numeValidationBinding = new Binding();
-            numeValidationBinding.Source = clientVSource;
-            numeValidationBinding.Path = new PropertyPath("Nume");
-            numeValidationBinding.NotifyOnValidationError = true;
-            numeValidationBinding.Mode = BindingMode.TwoWay;
-            numeValidationBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
-            //string required
-            numeValidationBinding.ValidationRules.Add(new StringNotEmpty());
-            NumeTextBox.SetBinding(TextBox.TextProperty, numeValidationBinding);
-            Binding lastNameValidationBinding = new Binding();
-            PrenumeTextBox.SetBinding(TextBox.TextProperty, lastNameValidationBinding); //setare binding nou
-        }
+    }
 
 
     }
